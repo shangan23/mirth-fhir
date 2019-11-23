@@ -1,0 +1,50 @@
+<codeTemplateLibrary version="3.7.0">
+  <id>0ac98fea-6d57-46fa-84a7-5e23211baaa2</id>
+  <name>Fhir</name>
+  <revision>2</revision>
+  <lastModified>
+    <time>1574502021823</time>
+    <timezone>Asia/Kolkata</timezone>
+  </lastModified>
+  <description></description>
+  <includeNewChannels>false</includeNewChannels>
+  <enabledChannelIds>
+    <string>a827a980-9c7f-410c-893a-141429f7b30a</string>
+  </enabledChannelIds>
+  <disabledChannelIds/>
+  <codeTemplates>
+    <codeTemplate version="3.7.0">
+      <id>6c2074b5-91b6-452c-b7f3-97aa8d80419a</id>
+      <name>Factory</name>
+      <revision>3</revision>
+      <lastModified>
+        <time>1574511706680</time>
+        <timezone>Asia/Kolkata</timezone>
+      </lastModified>
+      <contextSet>
+        <delegate>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+        </delegate>
+      </contextSet>
+      <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+        <type>FUNCTION</type>
+        <code>var fhirObj = new function () {
+  this.init = function (vendor) {
+    var url = &quot;http://52.21.3.60:57773/csp/healthshare/hsods/fhir/dstu2/&quot;;
+  var uname = &quot;_System&quot;;
+  var pwd = &quot;SYS&quot;;
+      var fhir = Packages.com.fhir.client.FhirFactory();
+      var init = fhir.initFhir(&quot;DSTU2&quot;, url, uname, pwd);
+  var results = init.getUserList(&quot;Practitioner&quot;)
+  logger.info(results);
+       return results;
+   };  
+}</code>
+      </properties>
+    </codeTemplate>
+  </codeTemplates>
+</codeTemplateLibrary>
