@@ -1,5 +1,6 @@
-# Mirth Connect - Custom Fhir implementation 
-Mirth Fhir with code template with custom jar
+# MirthConnect - Custom Fhir implementation 
+MirthConnect - Custom Fhir implementation helps you do coding on the FHIR resources. 
+It is very simple to use.
 
 ## How to?
 
