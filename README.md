@@ -48,5 +48,15 @@ fhir.getPatientFull("100000006")
 var fhir = new fhirObj().init();
 fhir.getPatient("100000006")
 ```
+3. The <code>getPatients()</code> method will return list of all patients.
+``` javascript
+var fhir = new fhirObj().init();
+fhir.getPatients()
+```
+4. The <code>getPractitioners()</code> method will return list of all practitioners.
+``` javascript
+var fhir = new fhirObj().init();
+fhir.getPractitioners()
+```
 
 :+1: :sparkles: :camel: :tada: :rocket: :metal: :octocat:  HAPPY CODING :+1: :sparkles: :camel: :tada: :rocket: :metal: :octocat: 
