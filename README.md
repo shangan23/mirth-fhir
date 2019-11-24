@@ -40,67 +40,54 @@ responseMap.put('results',fhir.getPatient("100000006"));
 
 1. The <code>getPatientFull(PatientID)</code> method will return full details about the patient which includes all the sections.
 ``` javascript
-var fhir = new fhirObj().init();
 fhir.getPatientFull("100000006")
 ```
 2. The <code>getPatient(PatientID)</code> method will return Demographics of the patient.
 ``` javascript
-var fhir = new fhirObj().init();
 fhir.getPatient("100000006")
 ```
 3. The <code>getPatients()</code> method will return list of all patients.
 ``` javascript
-var fhir = new fhirObj().init();
 fhir.getPatients()
 ```
 4. The <code>getPractitioners()</code> method will return list of all practitioners.
 ``` javascript
-var fhir = new fhirObj().init();
 fhir.getPractitioners()
 ```
 5. The <code>getPatientAllergyIntolerance(PatientID)</code> method will return AllergyIntolerance of the patient.
 ``` javascript
-var fhir = new fhirObj().init();
 fhir.getPatientAllergyIntolerance("100000006")
 ```
 6. The <code>getPatientAppointment(PatientID)</code> method will return Appointment of the patient.
 ``` javascript
-var fhir = new fhirObj().init();
 fhir.getPatientAppointment("100000006")
 ```
 7. The <code>getPatientCondition(PatientID)</code> method will return Condition of the patient.
 ``` javascript
-var fhir = new fhirObj().init();
 fhir.getPatientCondition("100000006")
 ```
 8. The <code>getPatientDiagnosticReport(PatientID)</code> method will return DiagnosticReport of the patient.
 ``` javascript
-var fhir = new fhirObj().init();
 fhir.getPatientDiagnosticReport("100000006")
 ```
 9. The <code>getPatientDocumentReference(PatientID)</code> method will return DocumentReference of the patient.
 ``` javascript
-var fhir = new fhirObj().init();
 fhir.getPatientDocumentReference("100000006")
 ```
 10. The <code>getPatientEncounter(PatientID)</code> method will return Encounter of the patient.
 ``` javascript
-var fhir = new fhirObj().init();
 fhir.getPatientEncounter("100000006")
 ```
 11. The <code>getPatientImmunization(PatientID)</code> method will return Immunization of the patient.
 ``` javascript
-var fhir = new fhirObj().init();
 fhir.getPatientImmunization("100000006")
 ```
 12. The <code>getPatientMedication(PatientID)</code> method will return Medication of the patient.
 ``` javascript
-var fhir = new fhirObj().init();
 fhir.getPatientMedication("100000006")
 ```
 13. The <code>getPatientObservation(PatientID)</code> method will return Observation of the patient.
 ``` javascript
-var fhir = new fhirObj().init();
 fhir.getPatientObservation("100000006")
 ```
 
