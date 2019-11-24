@@ -33,7 +33,7 @@ It is very simple to use.
 * On your Channel Summary, make sure you have Set Dependencies with imported(Fhir) Code Template library.
 * In your Javascript you can initiate the fhirObject as given below
 ```java
-var results = fhirObj.init('cerner');
-channelMap.put('results',results);
+var fhir = new fhirObj().init();
+responseMap.put('results',fhir.getPatient("100000006"));
 ```
 HAPPY CODING !!
