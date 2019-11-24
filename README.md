@@ -34,7 +34,6 @@ It is very simple to use.
 * In your Javascript you can initiate the fhirObject as given below
 ```java
 var fhir = new fhirObj().init();
-responseMap.put('results',fhir.getPatient("100000006"));
 ```
 ## Documentation on methods and it's usage
 
