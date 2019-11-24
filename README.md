@@ -36,4 +36,17 @@ It is very simple to use.
 var fhir = new fhirObj().init();
 responseMap.put('results',fhir.getPatient("100000006"));
 ```
+## Documentation on methods and it's usage
+
+1. The <code>getPatientFull(PatientID)</code> method will return full details about the patients which includes all the sections. E.g.,
+``` javascript
+var fhir = new fhirObj().init();
+fhir.getPatientFull("100000006")
+```
+2. The <code>getPatient(PatientID)</code> method will return demographics of the patient
+``` javascript
+var fhir = new fhirObj().init();
+fhir.getPatient("100000006")
+```
+
 HAPPY CODING !!
