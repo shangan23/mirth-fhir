@@ -33,7 +33,7 @@ It is very simple to use.
 * On your Channel Summary, make sure you have Set Dependencies with imported(Fhir) Code Template library.
 * In your Javascript you can initiate the fhirObject as given below
 ```java
-var fhir = new fhirObj().init();
+var fhir = new fhirObj().init("cerner","DSTU2");
 ```
 ## Documentation on methods and it's usage
 
@@ -41,53 +41,53 @@ var fhir = new fhirObj().init();
 ``` javascript
 fhir.getPatientFull("100000006")
 ```
-2. The <code>getPatient(PatientID)</code> method will return Demographics of the patient.
+2. The <code>getPatientDemographics(PatientID)</code> method will return Demographics of the patient.
 ``` javascript
-fhir.getPatient("100000006")
+fhir.getPatientDemographics("100000006")
 ```
-3. The <code>getPatients()</code> method will return list of all patients.
+3. The <code>getUserList("Patient")</code> method will return list of all patients.
 ``` javascript
-fhir.getPatients()
+fhir.getUserList("Patient")
 ```
-4. The <code>getPractitioners()</code> method will return list of all practitioners.
+4. The <code>getUserList("Practitioner")</code> method will return list of all practitioners.
 ``` javascript
-fhir.getPractitioners()
+fhir.getUserList("Practitioner")
 ```
-5. The <code>getPatientAllergyIntolerance(PatientID)</code> method will return AllergyIntolerance of the patient.
+5. The <code>getPatientResourceList(PatientID,"AllergyIntolerance")</code> method will return AllergyIntolerance of the patient.
 ``` javascript
-fhir.getPatientAllergyIntolerance("100000006")
+fhir.getPatientResourceList("100000006","AllergyIntolerance")
 ```
-6. The <code>getPatientAppointment(PatientID)</code> method will return Appointment of the patient.
+6. The <code>getPatientResourceList(PatientID,"Appointment")</code> method will return Appointment of the patient.
 ``` javascript
-fhir.getPatientAppointment("100000006")
+fhir.getPatientResourceList("100000006","Appointment")
 ```
-7. The <code>getPatientCondition(PatientID)</code> method will return Condition of the patient.
+7. The <code>getPatientResourceList(PatientID,"Condition")</code> method will return Condition of the patient.
 ``` javascript
-fhir.getPatientCondition("100000006")
+fhir.getPatientResourceList("100000006","Condition")
 ```
-8. The <code>getPatientDiagnosticReport(PatientID)</code> method will return DiagnosticReport of the patient.
+8. The <code>getPatientResourceList(PatientID,"DiagnosticReport")</code> method will return DiagnosticReport of the patient.
 ``` javascript
-fhir.getPatientDiagnosticReport("100000006")
+fhir.getPatientResourceList("100000006","DiagnosticReport")
 ```
-9. The <code>getPatientDocumentReference(PatientID)</code> method will return DocumentReference of the patient.
+9. The <code>getPatientResourceList(PatientID,"DocumentReference")</code> method will return DocumentReference of the patient.
 ``` javascript
-fhir.getPatientDocumentReference("100000006")
+fhir.getPatientResourceList("100000006","DocumentReference")
 ```
-10. The <code>getPatientEncounter(PatientID)</code> method will return Encounter of the patient.
+10. The <code>getPatientResourceList(PatientID,"Encounter")</code> method will return Encounter of the patient.
 ``` javascript
-fhir.getPatientEncounter("100000006")
+fhir.getPatientResourceList("100000006","Encounter")
 ```
-11. The <code>getPatientImmunization(PatientID)</code> method will return Immunization of the patient.
+11. The <code>getPatientResourceList(PatientID,"Immunization")</code> method will return Immunization of the patient.
 ``` javascript
-fhir.getPatientImmunization("100000006")
+fhir.getPatientResourceList("100000006","Immunization")
 ```
-12. The <code>getPatientMedication(PatientID)</code> method will return Medication of the patient.
+12. The <code>getPatientResourceList(PatientID,"MedicationOrder")</code> method will return Medication of the patient.
 ``` javascript
-fhir.getPatientMedication("100000006")
+fhir.getPatientResourceList("100000006","MedicationOrder")
 ```
-13. The <code>getPatientObservation(PatientID)</code> method will return Observation of the patient.
+13. The <code>getPatientResourceList(PatientID,"Observation")</code> method will return Observation of the patient.
 ``` javascript
-fhir.getPatientObservation("100000006")
+fhir.getPatientResourceList("100000006","Observation")
 ```
 
 :+1: :sparkles: :camel: :tada: :rocket: :metal: :octocat:  HAPPY CODING :+1: :sparkles: :camel: :tada: :rocket: :metal: :octocat: 
