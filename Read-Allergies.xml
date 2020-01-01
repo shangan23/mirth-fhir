@@ -1,0 +1,268 @@
+<channel version="3.7.0">
+  <id>c15d4352-13b2-4698-a771-b3593449d7ba</id>
+  <nextMetaDataId>2</nextMetaDataId>
+  <name>Read-Allergies</name>
+  <description></description>
+  <revision>8</revision>
+  <sourceConnector version="3.7.0">
+    <metaDataId>0</metaDataId>
+    <name>sourceConnector</name>
+    <properties class="com.mirth.connect.connectors.vm.VmReceiverProperties" version="3.7.0">
+      <pluginProperties/>
+      <sourceConnectorProperties version="3.7.0">
+        <responseVariable>None</responseVariable>
+        <respondAfterProcessing>true</respondAfterProcessing>
+        <processBatch>false</processBatch>
+        <firstResponse>false</firstResponse>
+        <processingThreads>1</processingThreads>
+        <resourceIds class="linked-hash-map">
+          <entry>
+            <string>Default Resource</string>
+            <string>[Default Resource]</string>
+          </entry>
+        </resourceIds>
+        <queueBufferSize>1000</queueBufferSize>
+      </sourceConnectorProperties>
+    </properties>
+    <transformer version="3.7.0">
+      <elements>
+        <com.mirth.connect.plugins.javascriptstep.JavaScriptStep version="3.7.0">
+          <sequenceNumber>0</sequenceNumber>
+          <enabled>true</enabled>
+          <script>responseMap.put(&apos;result&apos;,msg);
+
+var fhir = new fhirObj().init(&quot;cerner&quot;,&quot;R4&quot;,msg.token);
+var PatientId =  msg.patient_id;
+
+responseMap.put(&apos;patientAllergyIntolerance&apos;,fhir.getPatientResourceList(PatientId,&quot;AllergyIntolerance&quot;));
+//responseMap.put(&apos;patientAppointment&apos;,fhir.getPatientResourceList(PatientId,&quot;Appointment&quot;));
+//responseMap.put(&apos;patientCondition&apos;,fhir.getPatientResourceList(PatientId,&quot;Condition&quot;));
+//responseMap.put(&apos;patientDiagnosticReport&apos;,fhir.getPatientResourceList(PatientId,&quot;DiagnosticReport&quot;));
+//responseMap.put(&apos;patientDocumentReference&apos;,fhir.getPatientResourceList(PatientId,&quot;DocumentReference&quot;));
+//responseMap.put(&apos;patientEncounter&apos;,fhir.getPatientResourceList(PatientId,&quot;Encounter&quot;));
+//responseMap.put(&apos;patientImmunization&apos;,fhir.getPatientResourceList(PatientId,&quot;Immunization&quot;));
+//responseMap.put(&apos;patientMedicationOrder&apos;,fhir.getPatientResourceList(PatientId,&quot;MedicationOrder&quot;));
+//responseMap.put(&apos;patientObservation&apos;,fhir.getPatientResourceList(PatientId,&quot;Observation&quot;));</script>
+        </com.mirth.connect.plugins.javascriptstep.JavaScriptStep>
+      </elements>
+      <inboundTemplate encoding="base64"></inboundTemplate>
+      <outboundTemplate encoding="base64"></outboundTemplate>
+      <inboundDataType>JSON</inboundDataType>
+      <outboundDataType>RAW</outboundDataType>
+      <inboundProperties class="com.mirth.connect.plugins.datatypes.json.JSONDataTypeProperties" version="3.7.0">
+        <batchProperties class="com.mirth.connect.plugins.datatypes.json.JSONBatchProperties" version="3.7.0">
+          <splitType>JavaScript</splitType>
+          <batchScript></batchScript>
+        </batchProperties>
+      </inboundProperties>
+      <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.7.0">
+        <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.7.0">
+          <splitType>JavaScript</splitType>
+          <batchScript></batchScript>
+        </batchProperties>
+      </outboundProperties>
+    </transformer>
+    <filter version="3.7.0">
+      <elements/>
+    </filter>
+    <transportName>Channel Reader</transportName>
+    <mode>SOURCE</mode>
+    <enabled>true</enabled>
+    <waitForPrevious>true</waitForPrevious>
+  </sourceConnector>
+  <destinationConnectors>
+    <connector version="3.7.0">
+      <metaDataId>1</metaDataId>
+      <name>Destination 1</name>
+      <properties class="com.mirth.connect.connectors.vm.VmDispatcherProperties" version="3.7.0">
+        <pluginProperties/>
+        <destinationConnectorProperties version="3.7.0">
+          <queueEnabled>false</queueEnabled>
+          <sendFirst>false</sendFirst>
+          <retryIntervalMillis>10000</retryIntervalMillis>
+          <regenerateTemplate>false</regenerateTemplate>
+          <retryCount>0</retryCount>
+          <rotate>false</rotate>
+          <includeFilterTransformer>false</includeFilterTransformer>
+          <threadCount>1</threadCount>
+          <threadAssignmentVariable></threadAssignmentVariable>
+          <validateResponse>false</validateResponse>
+          <resourceIds class="linked-hash-map">
+            <entry>
+              <string>Default Resource</string>
+              <string>[Default Resource]</string>
+            </entry>
+          </resourceIds>
+          <queueBufferSize>1000</queueBufferSize>
+          <reattachAttachments>true</reattachAttachments>
+        </destinationConnectorProperties>
+        <channelId>none</channelId>
+        <channelTemplate>{
+	&quot;data&quot;:${patientAllergyIntolerance}
+}</channelTemplate>
+        <mapVariables/>
+      </properties>
+      <transformer version="3.7.0">
+        <elements/>
+        <inboundDataType>RAW</inboundDataType>
+        <outboundDataType>JSON</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.7.0">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.7.0">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.json.JSONDataTypeProperties" version="3.7.0">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.json.JSONBatchProperties" version="3.7.0">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </transformer>
+      <responseTransformer version="3.7.0">
+        <elements/>
+        <inboundDataType>JSON</inboundDataType>
+        <outboundDataType>JSON</outboundDataType>
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.json.JSONDataTypeProperties" version="3.7.0">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.json.JSONBatchProperties" version="3.7.0">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </inboundProperties>
+        <outboundProperties class="com.mirth.connect.plugins.datatypes.json.JSONDataTypeProperties" version="3.7.0">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.json.JSONBatchProperties" version="3.7.0">
+            <splitType>JavaScript</splitType>
+            <batchScript></batchScript>
+          </batchProperties>
+        </outboundProperties>
+      </responseTransformer>
+      <filter version="3.7.0">
+        <elements/>
+      </filter>
+      <transportName>Channel Writer</transportName>
+      <mode>DESTINATION</mode>
+      <enabled>true</enabled>
+      <waitForPrevious>true</waitForPrevious>
+    </connector>
+  </destinationConnectors>
+  <preprocessingScript>// Modify the message variable below to pre process data
+return message;</preprocessingScript>
+  <postprocessingScript>// This script executes once after a message has been processed
+// Responses returned from here will be stored as &quot;Postprocessor&quot; in the response map
+return;</postprocessingScript>
+  <deployScript>// This script executes once when the channel is deployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</deployScript>
+  <undeployScript>// This script executes once when the channel is undeployed
+// You only have access to the globalMap and globalChannelMap here to persist data
+return;</undeployScript>
+  <properties version="3.7.0">
+    <clearGlobalChannelMap>true</clearGlobalChannelMap>
+    <messageStorageMode>DEVELOPMENT</messageStorageMode>
+    <encryptData>false</encryptData>
+    <removeContentOnCompletion>false</removeContentOnCompletion>
+    <removeOnlyFilteredOnCompletion>false</removeOnlyFilteredOnCompletion>
+    <removeAttachmentsOnCompletion>false</removeAttachmentsOnCompletion>
+    <initialState>STARTED</initialState>
+    <storeAttachments>true</storeAttachments>
+    <metaDataColumns>
+      <metaDataColumn>
+        <name>SOURCE</name>
+        <type>STRING</type>
+        <mappingName>mirth_source</mappingName>
+      </metaDataColumn>
+      <metaDataColumn>
+        <name>TYPE</name>
+        <type>STRING</type>
+        <mappingName>mirth_type</mappingName>
+      </metaDataColumn>
+    </metaDataColumns>
+    <attachmentProperties version="3.7.0">
+      <type>None</type>
+      <properties/>
+    </attachmentProperties>
+    <resourceIds class="linked-hash-map">
+      <entry>
+        <string>Default Resource</string>
+        <string>[Default Resource]</string>
+      </entry>
+    </resourceIds>
+  </properties>
+  <exportData>
+    <metadata>
+      <enabled>true</enabled>
+      <lastModified>
+        <time>1577902629043</time>
+        <timezone>Asia/Kolkata</timezone>
+      </lastModified>
+      <pruningSettings>
+        <archiveEnabled>true</archiveEnabled>
+      </pruningSettings>
+    </metadata>
+    <codeTemplateLibraries>
+      <codeTemplateLibrary version="3.7.0">
+        <id>0ac98fea-6d57-46fa-84a7-5e23211baaa2</id>
+        <name>Fhir</name>
+        <revision>4</revision>
+        <lastModified>
+          <time>1577902549403</time>
+          <timezone>Asia/Kolkata</timezone>
+        </lastModified>
+        <description></description>
+        <includeNewChannels>false</includeNewChannels>
+        <enabledChannelIds>
+          <string>c15d4352-13b2-4698-a771-b3593449d7ba</string>
+          <string>a827a980-9c7f-410c-893a-141429f7b30a</string>
+          <string>e248ef99-284c-41f3-adac-d7b43433b16f</string>
+        </enabledChannelIds>
+        <disabledChannelIds/>
+        <codeTemplates>
+          <codeTemplate version="3.7.0">
+            <id>6c2074b5-91b6-452c-b7f3-97aa8d80419a</id>
+            <name>Factory</name>
+            <revision>82</revision>
+            <lastModified>
+              <time>1577896757590</time>
+              <timezone>Asia/Kolkata</timezone>
+            </lastModified>
+            <contextSet>
+              <delegate>
+                <contextType>GLOBAL_POSTPROCESSOR</contextType>
+                <contextType>SOURCE_RECEIVER</contextType>
+                <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+                <contextType>DESTINATION_DISPATCHER</contextType>
+                <contextType>GLOBAL_UNDEPLOY</contextType>
+                <contextType>GLOBAL_PREPROCESSOR</contextType>
+                <contextType>GLOBAL_DEPLOY</contextType>
+                <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+                <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+              </delegate>
+            </contextSet>
+            <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+              <type>FUNCTION</type>
+              <code>var fhirObj = function(){
+  this.init = function(vendor,version,token){
+  	var vendors = globalMap.get(&quot;FhirVendors&quot;);
+  	var vendorObj = vendors[vendor];
+  	if(vendorObj.name == &apos;Cerner&apos;){
+  		vendorObj.uname = token;
+  	}
+	var fhir = Packages.com.fhir.client.FhirFactory();
+     if(version == &apos;&apos;)
+     	version = &quot;DSTU2&quot;;
+     	
+     versionURL = version.toLowerCase()+&apos;_url&apos;;
+     logger.info(versionURL);
+     vendorObj.url = vendorObj[versionURL];
+     logger.info(vendorObj.url);
+     this.vendorObj = fhir.initFhir(version, vendorObj.url, vendorObj.uname, vendorObj.pwd);
+     return this.vendorObj;
+   };   
+}</code>
+            </properties>
+          </codeTemplate>
+        </codeTemplates>
+      </codeTemplateLibrary>
+    </codeTemplateLibraries>
+  </exportData>
+</channel>

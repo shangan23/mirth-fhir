@@ -1,46 +1,62 @@
 <codeTemplateLibrary version="3.7.0">
   <id>0ac98fea-6d57-46fa-84a7-5e23211baaa2</id>
   <name>Fhir</name>
-  <revision>2</revision>
+  <revision>4</revision>
   <lastModified>
-    <time>1574502021823</time>
+    <time>1577902549403</time>
     <timezone>Asia/Kolkata</timezone>
   </lastModified>
   <description></description>
   <includeNewChannels>false</includeNewChannels>
   <enabledChannelIds>
+    <string>c15d4352-13b2-4698-a771-b3593449d7ba</string>
     <string>a827a980-9c7f-410c-893a-141429f7b30a</string>
+    <string>e248ef99-284c-41f3-adac-d7b43433b16f</string>
   </enabledChannelIds>
-  <disabledChannelIds/>
+  <disabledChannelIds>
+    <string>64e32643-e41c-4986-9550-c634cb02f9ba</string>
+    <string>10ef3f18-f1c1-495c-80be-026eb56436c5</string>
+  </disabledChannelIds>
   <codeTemplates>
     <codeTemplate version="3.7.0">
       <id>6c2074b5-91b6-452c-b7f3-97aa8d80419a</id>
       <name>Factory</name>
-      <revision>63</revision>
+      <revision>82</revision>
       <lastModified>
-        <time>1576913277242</time>
+        <time>1577896757590</time>
         <timezone>Asia/Kolkata</timezone>
       </lastModified>
       <contextSet>
         <delegate>
-          <contextType>DESTINATION_DISPATCHER</contextType>
-          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
-          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
-          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>GLOBAL_POSTPROCESSOR</contextType>
           <contextType>SOURCE_RECEIVER</contextType>
+          <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+          <contextType>DESTINATION_DISPATCHER</contextType>
+          <contextType>GLOBAL_UNDEPLOY</contextType>
+          <contextType>GLOBAL_PREPROCESSOR</contextType>
+          <contextType>GLOBAL_DEPLOY</contextType>
+          <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+          <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
         </delegate>
       </contextSet>
       <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
         <type>FUNCTION</type>
         <code>var fhirObj = function(){
-  this.init = function(vendor,version){
-    	var url = &quot;http://52.21.3.60:57773/csp/healthshare/hsods/fhir/dstu2/&quot;;
-    	var uname = &quot;_System&quot;;
-	var pwd = &quot;SYS&quot;;
-     var fhir = Packages.com.fhir.client.FhirFactory();
+  this.init = function(vendor,version,token){
+  	var vendors = globalMap.get(&quot;FhirVendors&quot;);
+  	var vendorObj = vendors[vendor];
+  	if(vendorObj.name == &apos;Cerner&apos;){
+  		vendorObj.uname = token;
+  	}
+	var fhir = Packages.com.fhir.client.FhirFactory();
      if(version == &apos;&apos;)
      	version = &quot;DSTU2&quot;;
-     this.vendorObj = fhir.initFhir(version, url, uname, pwd);
+     	
+     versionURL = version.toLowerCase()+&apos;_url&apos;;
+     logger.info(versionURL);
+     vendorObj.url = vendorObj[versionURL];
+     logger.info(vendorObj.url);
+     this.vendorObj = fhir.initFhir(version, vendorObj.url, vendorObj.uname, vendorObj.pwd);
      return this.vendorObj;
    };   
 }</code>

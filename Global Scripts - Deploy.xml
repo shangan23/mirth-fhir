@@ -1,0 +1,48 @@
+<map>
+  <entry>
+    <string>Undeploy</string>
+    <string>// This script executes once for each deploy, undeploy, or redeploy task
+// if at least one channel was undeployed
+// You only have access to the globalMap here to persist data
+return;</string>
+  </entry>
+  <entry>
+    <string>Postprocessor</string>
+    <string>// This script executes once after a message has been processed
+// This script applies across all channels
+// Responses returned from here will be stored as &quot;Postprocessor&quot; in the response map
+// You have access to &quot;response&quot;, if returned from the channel postprocessor
+return;</string>
+  </entry>
+  <entry>
+    <string>Deploy</string>
+    <string>// This script executes once for each deploy or redeploy task
+// You only have access to the globalMap here to persist data
+
+var FhirVendorDetails = {
+		&quot;cerner&quot;:{
+			&quot;name&quot;:&quot;Cerner&quot;,
+			&quot;r4_url&quot;:&quot;https://fhir-ehr.sandboxcerner.com/r4/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca&quot;,
+			&quot;pwd&quot;: &quot;$bearer$Token$FHIR$&quot;
+			},
+		&quot;vista&quot;:{
+			&quot;name&quot;:&quot;VistA&quot;,
+			&quot;dstu2_url&quot;:&quot;http://52.21.3.60:57773/csp/healthshare/hsods/fhir/dstu2/&quot;,
+			&quot;stu3_url&quot;:&quot;http://52.21.3.60:57773/csp/healthshare/hsods/fhir/stu3/&quot;,
+			&quot;uname&quot;:&quot;_System&quot;,
+			&quot;pwd&quot;: &quot;SYS&quot;
+			}
+	};
+
+
+globalMap.put(&quot;FhirVendors&quot;,FhirVendorDetails);
+
+return;</string>
+  </entry>
+  <entry>
+    <string>Preprocessor</string>
+    <string>// Modify the message variable below to pre process data
+// This script applies across all channels
+return message;</string>
+  </entry>
+</map>
