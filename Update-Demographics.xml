@@ -1,24 +1,16 @@
 <channel version="3.7.0">
-  <id>10ef3f18-f1c1-495c-80be-026eb56436c5</id>
+  <id>e248ef99-284c-41f3-adac-d7b43433b16f</id>
   <nextMetaDataId>2</nextMetaDataId>
-  <name>AccessToken</name>
+  <name>Update-Demographics</name>
   <description></description>
-  <revision>13</revision>
+  <revision>21</revision>
   <sourceConnector version="3.7.0">
     <metaDataId>0</metaDataId>
     <name>sourceConnector</name>
-    <properties class="com.mirth.connect.connectors.http.HttpReceiverProperties" version="3.7.0">
-      <pluginProperties>
-        <com.mirth.connect.plugins.httpauth.NoneHttpAuthProperties version="3.7.0">
-  <authType>NONE</authType>
-        </com.mirth.connect.plugins.httpauth.NoneHttpAuthProperties>
-      </pluginProperties>
-      <listenerConnectorProperties version="3.7.0">
-        <host>127.0.0.1</host>
-        <port>8085</port>
-      </listenerConnectorProperties>
+    <properties class="com.mirth.connect.connectors.vm.VmReceiverProperties" version="3.7.0">
+      <pluginProperties/>
       <sourceConnectorProperties version="3.7.0">
-        <responseVariable>Auto-generate (Before processing)</responseVariable>
+        <responseVariable>None</responseVariable>
         <respondAfterProcessing>true</respondAfterProcessing>
         <processBatch>false</processBatch>
         <firstResponse>false</firstResponse>
@@ -31,52 +23,56 @@
         </resourceIds>
         <queueBufferSize>1000</queueBufferSize>
       </sourceConnectorProperties>
-      <xmlBody>false</xmlBody>
-      <parseMultipart>true</parseMultipart>
-      <includeMetadata>false</includeMetadata>
-      <binaryMimeTypes>application/json, text/javascript, */*</binaryMimeTypes>
-      <binaryMimeTypesRegex>false</binaryMimeTypesRegex>
-      <responseContentType>application/json, text/javascript, */*</responseContentType>
-      <responseDataTypeBinary>false</responseDataTypeBinary>
-      <responseStatusCode></responseStatusCode>
-      <responseHeaders class="linked-hash-map"/>
-      <charset>DEFAULT_ENCODING</charset>
-      <contextPath></contextPath>
-      <timeout>30000</timeout>
-      <staticResources/>
     </properties>
     <transformer version="3.7.0">
       <elements>
         <com.mirth.connect.plugins.javascriptstep.JavaScriptStep version="3.7.0">
-          <name>Fetch Cerner Token and PatientID and Route to Patient Demographics channel</name>
+          <name>Update Given Name of the Patient.</name>
           <sequenceNumber>0</sequenceNumber>
           <enabled>true</enabled>
-          <script>logger.info(&quot;Fetching Cerner Access token...&quot;);
+          <script>logger.info(&quot;Initiating Update demographics...&quot;);
+responseMap.put(&apos;result&apos;,msg);
 
-responseMap.put(&apos;access_token&apos;, $(&apos;parameters&apos;).getParameter(&apos;access_token&apos;));
-responseMap.put(&apos;patient_id&apos;, $(&apos;parameters&apos;).getParameter(&apos;patient_id&apos;));
+var fhir = new fhirObj().init(&quot;cerner&quot;,&quot;R4&quot;,msg.token);
+var PatientId =  msg.patient_id;
 
-var cernerDetails = {
-	&apos;token&apos;:$(&apos;parameters&apos;).getParameter(&apos;access_token&apos;),
-	&apos;patient_id&apos;:$(&apos;parameters&apos;).getParameter(&apos;patient_id&apos;)
-}
+var Payload = &quot;[\n&quot; + 
+				&quot;    {\n&quot; + 
+				&quot;    \&quot;path\&quot;: \&quot;/name/0/id\&quot;,\n&quot; + 
+				&quot;    \&quot;op\&quot;: \&quot;test\&quot;,\n&quot; + 
+				&quot;    \&quot;value\&quot;: \&quot;CI-&quot; + PatientId + &quot;-0\&quot;\n&quot; + 
+				&quot;    },\n&quot; + 
+				&quot;    {\n&quot; + 
+				&quot;        \&quot;path\&quot;: \&quot;/name/0/given\&quot;,\n&quot; + 
+				&quot;        \&quot;op\&quot;: \&quot;replace\&quot;,\n&quot; + 
+				&quot;        \&quot;value\&quot;: [\n&quot; + 
+				&quot;            \&quot;Ganesh\&quot;,\n&quot; + 
+				&quot;            \&quot;Jayaraman\&quot;\n&quot; + 
+				&quot;        ]\n&quot; + 
+				&quot;    },\n&quot; + 
+				&quot;    {\n&quot; + 
+				&quot;        \&quot;path\&quot;: \&quot;/name/0/family\&quot;,\n&quot; + 
+				&quot;        \&quot;op\&quot;: \&quot;replace\&quot;,\n&quot; + 
+				&quot;        \&quot;value\&quot;: \&quot;SHANKAR\&quot;\n&quot; + 
+				&quot;    }\n&quot; + 
+				&quot;]&quot;;
 
-logger.info(&quot;Routing to Read Demographics...&quot;);
-router.routeMessage(&apos;Read-Demographics&apos;, JSON.stringify(cernerDetails));</script>
+responseMap.put(&apos;updatePatient&apos;,fhir.updatePatient(PatientId,Payload,true));
+responseMap.put(&apos;patientDemographics&apos;,fhir.getPatientDemographics(PatientId));</script>
         </com.mirth.connect.plugins.javascriptstep.JavaScriptStep>
       </elements>
       <inboundTemplate encoding="base64"></inboundTemplate>
       <outboundTemplate encoding="base64"></outboundTemplate>
-      <inboundDataType>RAW</inboundDataType>
-      <outboundDataType>JSON</outboundDataType>
-      <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.7.0">
-        <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.7.0">
+      <inboundDataType>JSON</inboundDataType>
+      <outboundDataType>RAW</outboundDataType>
+      <inboundProperties class="com.mirth.connect.plugins.datatypes.json.JSONDataTypeProperties" version="3.7.0">
+        <batchProperties class="com.mirth.connect.plugins.datatypes.json.JSONBatchProperties" version="3.7.0">
           <splitType>JavaScript</splitType>
           <batchScript></batchScript>
         </batchProperties>
       </inboundProperties>
-      <outboundProperties class="com.mirth.connect.plugins.datatypes.json.JSONDataTypeProperties" version="3.7.0">
-        <batchProperties class="com.mirth.connect.plugins.datatypes.json.JSONBatchProperties" version="3.7.0">
+      <outboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.7.0">
+        <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.7.0">
           <splitType>JavaScript</splitType>
           <batchScript></batchScript>
         </batchProperties>
@@ -85,7 +81,7 @@ router.routeMessage(&apos;Read-Demographics&apos;, JSON.stringify(cernerDetails)
     <filter version="3.7.0">
       <elements/>
     </filter>
-    <transportName>HTTP Listener</transportName>
+    <transportName>Channel Reader</transportName>
     <mode>SOURCE</mode>
     <enabled>true</enabled>
     <waitForPrevious>true</waitForPrevious>
@@ -122,10 +118,10 @@ router.routeMessage(&apos;Read-Demographics&apos;, JSON.stringify(cernerDetails)
       </properties>
       <transformer version="3.7.0">
         <elements/>
-        <inboundDataType>JSON</inboundDataType>
+        <inboundDataType>RAW</inboundDataType>
         <outboundDataType>JSON</outboundDataType>
-        <inboundProperties class="com.mirth.connect.plugins.datatypes.json.JSONDataTypeProperties" version="3.7.0">
-          <batchProperties class="com.mirth.connect.plugins.datatypes.json.JSONBatchProperties" version="3.7.0">
+        <inboundProperties class="com.mirth.connect.plugins.datatypes.raw.RawDataTypeProperties" version="3.7.0">
+          <batchProperties class="com.mirth.connect.plugins.datatypes.raw.RawBatchProperties" version="3.7.0">
             <splitType>JavaScript</splitType>
             <batchScript></batchScript>
           </batchProperties>
@@ -210,12 +206,77 @@ return;</undeployScript>
     <metadata>
       <enabled>true</enabled>
       <lastModified>
-        <time>1578298791103</time>
+        <time>1578298832890</time>
         <timezone>Asia/Kolkata</timezone>
       </lastModified>
       <pruningSettings>
         <archiveEnabled>true</archiveEnabled>
       </pruningSettings>
     </metadata>
+    <codeTemplateLibraries>
+      <codeTemplateLibrary version="3.7.0">
+        <id>0ac98fea-6d57-46fa-84a7-5e23211baaa2</id>
+        <name>Fhir</name>
+        <revision>3</revision>
+        <lastModified>
+          <time>1578296838245</time>
+          <timezone>Asia/Kolkata</timezone>
+        </lastModified>
+        <description></description>
+        <includeNewChannels>false</includeNewChannels>
+        <enabledChannelIds>
+          <string>c15d4352-13b2-4698-a771-b3593449d7ba</string>
+          <string>8231cccf-d113-4ba9-895f-b43f5dd33577</string>
+          <string>a827a980-9c7f-410c-893a-141429f7b30a</string>
+          <string>5cfc8ad8-0fb2-48bf-a318-1aabd86cf60e</string>
+          <string>e248ef99-284c-41f3-adac-d7b43433b16f</string>
+        </enabledChannelIds>
+        <disabledChannelIds/>
+        <codeTemplates>
+          <codeTemplate version="3.7.0">
+            <id>6c2074b5-91b6-452c-b7f3-97aa8d80419a</id>
+            <name>Factory</name>
+            <revision>2</revision>
+            <lastModified>
+              <time>1578140247139</time>
+              <timezone>Asia/Kolkata</timezone>
+            </lastModified>
+            <contextSet>
+              <delegate>
+                <contextType>GLOBAL_DEPLOY</contextType>
+                <contextType>GLOBAL_POSTPROCESSOR</contextType>
+                <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+                <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+                <contextType>DESTINATION_DISPATCHER</contextType>
+                <contextType>GLOBAL_UNDEPLOY</contextType>
+                <contextType>GLOBAL_PREPROCESSOR</contextType>
+                <contextType>SOURCE_RECEIVER</contextType>
+                <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+              </delegate>
+            </contextSet>
+            <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
+              <type>FUNCTION</type>
+              <code>var fhirObj = function(){
+  this.init = function(vendor,version,token){
+  	var vendors = globalMap.get(&quot;FhirVendors&quot;);
+  	var vendorObj = vendors[vendor];
+  	if(vendorObj.name == &apos;Cerner&apos;){
+  		vendorObj.uname = token;
+  	}
+	var fhir = Packages.com.fhir.client.FhirFactory();
+     if(version == &apos;&apos;)
+     	version = &quot;DSTU2&quot;;
+     	
+     versionURL = version.toLowerCase()+&apos;_url&apos;;
+     vendorObj.url = vendorObj[versionURL];
+     this.vendorObj = fhir.initFhir(version, vendorObj.url, vendorObj.uname, vendorObj.pwd);
+     return this.vendorObj;
+   };   
+}</code>
+            </properties>
+          </codeTemplate>
+        </codeTemplates>
+      </codeTemplateLibrary>
+    </codeTemplateLibraries>
   </exportData>
 </channel>

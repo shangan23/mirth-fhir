@@ -3,7 +3,7 @@
   <nextMetaDataId>2</nextMetaDataId>
   <name>Update-Allergies</name>
   <description></description>
-  <revision>3</revision>
+  <revision>1</revision>
   <sourceConnector version="3.7.0">
     <metaDataId>0</metaDataId>
     <name>sourceConnector</name>

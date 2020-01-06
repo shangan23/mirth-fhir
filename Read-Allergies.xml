@@ -3,7 +3,7 @@
   <nextMetaDataId>2</nextMetaDataId>
   <name>Read-Allergies</name>
   <description></description>
-  <revision>8</revision>
+  <revision>6</revision>
   <sourceConnector version="3.7.0">
     <metaDataId>0</metaDataId>
     <name>sourceConnector</name>
@@ -29,12 +29,19 @@
         <com.mirth.connect.plugins.javascriptstep.JavaScriptStep version="3.7.0">
           <sequenceNumber>0</sequenceNumber>
           <enabled>true</enabled>
-          <script>responseMap.put(&apos;result&apos;,msg);
+          <script>logger.info(&quot;Initiating Patient Allergies read...&quot;);
+responseMap.put(&apos;result&apos;,msg);
 
 var fhir = new fhirObj().init(&quot;cerner&quot;,&quot;R4&quot;,msg.token);
 var PatientId =  msg.patient_id;
-
+var cernerDetails = {
+	&apos;token&apos;:msg.token,
+	&apos;patient_id&apos;:msg.patient_id
+}
 responseMap.put(&apos;patientAllergyIntolerance&apos;,fhir.getPatientResourceList(PatientId,&quot;AllergyIntolerance&quot;));
+logger.info(&quot;Routing to Update and Create demographics...&quot;);
+router.routeMessage(&apos;Update-Demographics&apos;, JSON.stringify(cernerDetails));
+router.routeMessage(&apos;Create-Demographics&apos;, JSON.stringify(cernerDetails));
 //responseMap.put(&apos;patientAppointment&apos;,fhir.getPatientResourceList(PatientId,&quot;Appointment&quot;));
 //responseMap.put(&apos;patientCondition&apos;,fhir.getPatientResourceList(PatientId,&quot;Condition&quot;));
 //responseMap.put(&apos;patientDiagnosticReport&apos;,fhir.getPatientResourceList(PatientId,&quot;DiagnosticReport&quot;));
@@ -192,7 +199,7 @@ return;</undeployScript>
     <metadata>
       <enabled>true</enabled>
       <lastModified>
-        <time>1577902629043</time>
+        <time>1578298671188</time>
         <timezone>Asia/Kolkata</timezone>
       </lastModified>
       <pruningSettings>
@@ -203,16 +210,18 @@ return;</undeployScript>
       <codeTemplateLibrary version="3.7.0">
         <id>0ac98fea-6d57-46fa-84a7-5e23211baaa2</id>
         <name>Fhir</name>
-        <revision>4</revision>
+        <revision>3</revision>
         <lastModified>
-          <time>1577902549403</time>
+          <time>1578296838245</time>
           <timezone>Asia/Kolkata</timezone>
         </lastModified>
         <description></description>
         <includeNewChannels>false</includeNewChannels>
         <enabledChannelIds>
           <string>c15d4352-13b2-4698-a771-b3593449d7ba</string>
+          <string>8231cccf-d113-4ba9-895f-b43f5dd33577</string>
           <string>a827a980-9c7f-410c-893a-141429f7b30a</string>
+          <string>5cfc8ad8-0fb2-48bf-a318-1aabd86cf60e</string>
           <string>e248ef99-284c-41f3-adac-d7b43433b16f</string>
         </enabledChannelIds>
         <disabledChannelIds/>
@@ -220,22 +229,22 @@ return;</undeployScript>
           <codeTemplate version="3.7.0">
             <id>6c2074b5-91b6-452c-b7f3-97aa8d80419a</id>
             <name>Factory</name>
-            <revision>82</revision>
+            <revision>2</revision>
             <lastModified>
-              <time>1577896757590</time>
+              <time>1578140247139</time>
               <timezone>Asia/Kolkata</timezone>
             </lastModified>
             <contextSet>
               <delegate>
+                <contextType>GLOBAL_DEPLOY</contextType>
                 <contextType>GLOBAL_POSTPROCESSOR</contextType>
-                <contextType>SOURCE_RECEIVER</contextType>
-                <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
+                <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
+                <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
                 <contextType>DESTINATION_DISPATCHER</contextType>
                 <contextType>GLOBAL_UNDEPLOY</contextType>
                 <contextType>GLOBAL_PREPROCESSOR</contextType>
-                <contextType>GLOBAL_DEPLOY</contextType>
-                <contextType>DESTINATION_RESPONSE_TRANSFORMER</contextType>
-                <contextType>SOURCE_FILTER_TRANSFORMER</contextType>
+                <contextType>SOURCE_RECEIVER</contextType>
+                <contextType>DESTINATION_FILTER_TRANSFORMER</contextType>
               </delegate>
             </contextSet>
             <properties class="com.mirth.connect.model.codetemplates.BasicCodeTemplateProperties">
@@ -252,9 +261,7 @@ return;</undeployScript>
      	version = &quot;DSTU2&quot;;
      	
      versionURL = version.toLowerCase()+&apos;_url&apos;;
-     logger.info(versionURL);
      vendorObj.url = vendorObj[versionURL];
-     logger.info(vendorObj.url);
      this.vendorObj = fhir.initFhir(version, vendorObj.url, vendorObj.uname, vendorObj.pwd);
      return this.vendorObj;
    };   
